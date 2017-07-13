@@ -17,20 +17,41 @@ public class UpgradeManager : MonoBehaviour {
 	public string itemDescription;
 
     private float baseCost;
+    private int basePower;
 	private bool hover = false;
     private GameManager gameManager;
+    private float[] allLevelTotals = { 25, 10, 250, 500, 777, 1000, 1250, 1337, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000 };
+    private int level = 0;
+    private Transform itemLevel;
 
     private void Start()
     {
         baseCost = cost;
 		description.text = itemDescription;
         gameManager = FindObjectOfType<GameManager>( );
+        itemLevel = progress.transform.Find("ItemLevel");
+        basePower = (int)clickPower;
     }
 
     void Update()
     {
-        gameManager.SetProgressBar(progress, count, 25f); // Second argument: will need if(quantity/levelTotal => 1) {redefine levelTotal as next level from the array??} in Update to redefine this!!
-        itemInfo.text = itemName + "\nCost: " + cost + "\nStars: " + clickPower + "/s";
+        level = 0;
+        for (int i = 0; i<allLevelTotals.Length-1; i++)
+        {
+            if (count > allLevelTotals[level])
+            {
+                level++;
+                float myLevel = (float)level;
+                clickPower = (basePower - (1/basePower)) * (level+1);
+            }
+        }
+        gameManager.SetProgressBar(progress, count, allLevelTotals[level]); // Second argument: will need if(quantity/levelTotal => 1) {redefine levelTotal as next level from the array??} in Update to redefine this!!
+        if (itemLevel != null)
+        {
+            print("Child text found." );
+            itemLevel.GetComponent<Text>( ).text = level.ToString( );
+        }
+        itemInfo.text = itemName + "\nCost: " + cost + "\nStars: " + clickPower + "/click";
 		if (hover == false) {
 			descriptionBox.SetActive (false);
 			itemQuantity.text = "Owned: " + count.ToString ();

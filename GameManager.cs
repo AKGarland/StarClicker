@@ -5,6 +5,7 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -26,8 +27,8 @@ public class GameManager : MonoBehaviour {
     {
         progressBar.GetComponent<Image>( ).fillAmount = (quantity / levelTotal);
     }
-	
-	public void Save () {
+
+    public void Save () {
         BinaryFormatter binForm = new BinaryFormatter( );
         FileStream file = File.Create(Application.persistentDataPath + "/playerinfo.ball");
 
