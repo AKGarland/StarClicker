@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -20,6 +21,11 @@ public class GameManager : MonoBehaviour {
     void Start () {
         click = FindObjectOfType<Click>( );
 	}
+
+    public void SetProgressBar(GameObject progressBar, float quantity, float levelTotal)
+    {
+        progressBar.GetComponent<Image>( ).fillAmount = (quantity / levelTotal);
+    }
 	
 	public void Save () {
         BinaryFormatter binForm = new BinaryFormatter( );
@@ -29,7 +35,6 @@ public class GameManager : MonoBehaviour {
         info.stars = click.star;
         info.starsPerClick = click.starPerClick;
         info.timeOfSave = Time.time;
-
 
             for (int i = 0; i < items.Length; i++)
             {
@@ -97,7 +102,7 @@ class PlayerInfo
     public float stars;
     public int starsPerClick;
 
-    public int[] itemTickValue = {1,2,3,4,5,6,7,8,9 };
+    public int[] itemTickValue = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     public int[] itemCount = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     public float[] itemCost = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
